@@ -1,4 +1,4 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import type { Request as VercelRequest, Response as VercelResponse } from "express";
 import { GoogleGenAI, Modality } from "@google/genai";
 
 // 언어별로 음성을 캐시 — 서버 인스턴스가 살아있는 동안 유지됨
