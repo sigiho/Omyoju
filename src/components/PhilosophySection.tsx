@@ -1,7 +1,6 @@
 import { motion } from "motion/react";
 import { Play, Volume2, Loader2 } from "lucide-react";
 import React, { useState } from "react";
-import { generateSpeech } from "../services/geminiService";
 import { Translation } from "../translations";
 
 interface PhilosophySectionProps {
@@ -9,45 +8,59 @@ interface PhilosophySectionProps {
   subtitle: string;
   content: string;
   ttsLabels: Translation["ttsButton"];
+  lang: string;
 }
 
-export const PhilosophySection: React.FC<PhilosophySectionProps> = ({ title, subtitle, content, ttsLabels }) => {
+export const PhilosophySection: React.FC<PhilosophySectionProps> = ({ title, subtitle, content, ttsLabels, lang }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [audioSource, setAudioSource] = useState<AudioBufferSourceNode | null>(null);
-  const [audioCtx, setAudioCtx] = useState<AudioContext | null>(null);
-
   const [audioBuffer, setAudioBuffer] = useState<string | null>(null);
 
-  // Pre-fetch audio when content changes
+  // 언어가 바뀌면 캐시 초기화 & 새 오디오 로드
   React.useEffect(() => {
-    // Stop current playback if content changes
     if (audioSource) {
       audioSource.stop();
       setIsPlaying(false);
       setAudioSource(null);
     }
+    setAudioBuffer(null);
 
-    const prefetchAudio = async () => {
-      setAudioBuffer(null);
+    const loadAudio = async () => {
       try {
-        const base64 = await generateSpeech(content);
-        if (base64) {
+        // 먼저 미리 생성된 정적 파일 시도
+        const res = await fetch(`/audio/${lang}.b64`);
+        if (res.ok) {
+          const base64 = await res.text();
           setAudioBuffer(base64);
+          return;
         }
-      } catch (error) {
-        console.error("Pre-fetch TTS failed:", error);
+      } catch {
+        // 정적 파일 없으면 API 호출로 대체
       }
-    };
-    prefetchAudio();
 
-    // Cleanup on unmount
-    return () => {
-      if (audioSource) {
-        audioSource.stop();
+      // 정적 파일이 없을 경우 API 폴백
+      try {
+        const res = await fetch('/api/tts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: content }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.audio) setAudioBuffer(data.audio);
+        }
+      } catch (err) {
+        console.error('오디오 로드 실패:', err);
       }
     };
-  }, [content]);
+
+    loadAudio();
+
+    return () => {
+      if (audioSource) audioSource.stop();
+    };
+  }, [lang]);
 
   const handlePlayTTS = async () => {
     if (isPlaying && audioSource) {
@@ -59,16 +72,22 @@ export const PhilosophySection: React.FC<PhilosophySectionProps> = ({ title, sub
     if (audioBuffer) {
       await playPcm(audioBuffer);
     } else {
-      // Fallback if not pre-fetched yet
       setIsLoading(true);
       try {
-        const base64 = await generateSpeech(content);
-        if (base64) {
-          setAudioBuffer(base64);
-          await playPcm(base64);
+        const res = await fetch('/api/tts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: content }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.audio) {
+            setAudioBuffer(data.audio);
+            await playPcm(data.audio);
+          }
         }
-      } catch (error) {
-        console.error("TTS failed:", error);
+      } catch (err) {
+        console.error('TTS 실패:', err);
       } finally {
         setIsLoading(false);
       }
@@ -77,15 +96,13 @@ export const PhilosophySection: React.FC<PhilosophySectionProps> = ({ title, sub
 
   const playPcm = async (base64: string) => {
     const context = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
-    setAudioCtx(context);
-    
+
     const binaryString = window.atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; i++) {
+    const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
       bytes[i] = binaryString.charCodeAt(i);
     }
-    
+
     const data = new Int16Array(bytes.buffer);
     const floatData = new Float32Array(data.length);
     for (let i = 0; i < data.length; i++) {
@@ -119,7 +136,7 @@ export const PhilosophySection: React.FC<PhilosophySectionProps> = ({ title, sub
         <h2 className="font-serif text-gold text-sm uppercase tracking-[0.4em] mb-4">
           {subtitle}
         </h2>
-        <h1 
+        <h1
           className="font-serif text-4xl md:text-6xl text-obang-white mb-8 tracking-tight"
           dangerouslySetInnerHTML={{ __html: title }}
         />
@@ -153,7 +170,7 @@ export const PhilosophySection: React.FC<PhilosophySectionProps> = ({ title, sub
         className="relative"
       >
         <div className="absolute -left-8 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gold/20 to-transparent hidden md:block" />
-        
+
         <div className="font-serif text-xl md:text-2xl leading-relaxed text-obang-white/80 space-y-8 italic">
           {content.split("\n\n").map((para, idx) => (
             <p key={idx} className="first-letter:text-4xl first-letter:text-gold first-letter:mr-2 first-letter:float-left">
@@ -165,18 +182,3 @@ export const PhilosophySection: React.FC<PhilosophySectionProps> = ({ title, sub
     </div>
   );
 };
-
-function b64toBlob(b64Data: string, contentType = "", sliceSize = 512) {
-  const byteCharacters = atob(b64Data);
-  const byteArrays = [];
-  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-    const slice = byteCharacters.slice(offset, offset + sliceSize);
-    const byteNumbers = new Array(slice.length);
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    byteArrays.push(byteArray);
-  }
-  return new Blob(byteArrays, { type: contentType });
-}

@@ -51,7 +51,7 @@ export default function App() {
 
       {/* Hero Section */}
       <section className="h-screen flex flex-col items-center justify-center relative px-6">
-        <motion.div 
+        <motion.div
           style={{ opacity, scale }}
           className="text-center"
         >
@@ -67,7 +67,7 @@ export default function App() {
               {t.heroTitle}
             </span>
           </motion.div>
-          
+
           <AnimatePresence mode="wait">
             <motion.h2
               key={lang + "subtitle"}
@@ -80,7 +80,7 @@ export default function App() {
               {t.heroSubtitle}
             </motion.h2>
           </AnimatePresence>
-          
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -95,12 +95,13 @@ export default function App() {
 
       {/* Content Section */}
       <section className="relative">
-        <PhilosophySection 
+        <PhilosophySection
           key={lang + "content"}
           title={t.sectionTitle}
           subtitle={t.sectionSubtitle}
           content={t.content}
           ttsLabels={t.ttsButton}
+          lang={lang}
         />
       </section>
 
@@ -113,7 +114,7 @@ export default function App() {
           className="text-center max-w-2xl"
         >
           <AnimatePresence mode="wait">
-            <motion.p 
+            <motion.p
               key={lang + "footer"}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
