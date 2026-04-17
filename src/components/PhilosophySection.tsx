@@ -31,7 +31,7 @@ export const PhilosophySection: React.FC<PhilosophySectionProps> = ({ title, sub
         // 먼저 미리 생성된 정적 파일 시도
         const res = await fetch(`/audio/${lang}.b64`);
         if (res.ok) {
-          const base64 = await res.text();
+          const base64 = (await res.text()).trim();
           setAudioBuffer(base64);
           return;
         }
