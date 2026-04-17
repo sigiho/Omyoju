@@ -2,7 +2,7 @@
 // 음성 파일 생성 스크립트
 // 실행 방법: GEMINI_API_KEY=여기에키입력 node scripts/generate-audio.mjs
 
-import { writeFileSync, mkdirSync } from 'fs';
+import { writeFileSync, mkdirSync, existsSync } from 'fs';
 
 const API_KEY = process.env.GEMINI_API_KEY;
 if (!API_KEY) {
@@ -92,11 +92,19 @@ async function main() {
 
   for (let i = 0; i < langs.length; i++) {
     const lang = langs[i];
+    const filePath = `public/audio/${lang}.b64`;
+
+    // 이미 생성된 파일은 건너뜀
+    if (existsSync(filePath)) {
+      console.log(`⏭️  ${lang} 이미 존재 — 건너뜀`);
+      continue;
+    }
+
     try {
       console.log(`🎙️  [${i+1}/${langs.length}] ${lang} 음성 생성 중...`);
       const audio = await generateAudio(lang, content[lang]);
       if (audio) {
-        writeFileSync(`public/audio/${lang}.b64`, audio);
+        writeFileSync(filePath, audio);
         console.log(`✅ ${lang} 저장 완료`);
       }
     } catch (err) {
