@@ -14,114 +14,46 @@ interface PhilosophySectionProps {
 export const PhilosophySection: React.FC<PhilosophySectionProps> = ({ title, subtitle, content, ttsLabels, lang }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [audioSource, setAudioSource] = useState<AudioBufferSourceNode | null>(null);
-  const [audioBuffer, setAudioBuffer] = useState<string | null>(null);
+  const audioRef = React.useRef<HTMLAudioElement | null>(null);
 
-  // 언어가 바뀌면 캐시 초기화 & 새 오디오 로드
+  // 언어가 바뀌면 재생 중지
   React.useEffect(() => {
-    if (audioSource) {
-      audioSource.stop();
-      setIsPlaying(false);
-      setAudioSource(null);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
     }
-    setAudioBuffer(null);
-
-    const loadAudio = async () => {
-      try {
-        // 먼저 미리 생성된 정적 파일 시도
-        const res = await fetch(`/audio/${lang}.b64`);
-        if (res.ok) {
-          const base64 = (await res.text()).trim();
-          setAudioBuffer(base64);
-          return;
-        }
-      } catch {
-        // 정적 파일 없으면 API 호출로 대체
-      }
-
-      // 정적 파일이 없을 경우 API 폴백
-      try {
-        const res = await fetch('/api/tts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: content }),
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.audio) setAudioBuffer(data.audio);
-        }
-      } catch (err) {
-        console.error('오디오 로드 실패:', err);
-      }
-    };
-
-    loadAudio();
-
-    return () => {
-      if (audioSource) audioSource.stop();
-    };
+    setIsPlaying(false);
   }, [lang]);
 
   const handlePlayTTS = async () => {
-    if (isPlaying && audioSource) {
-      audioSource.stop();
+    // 재생 중이면 멈추기
+    if (isPlaying && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
       setIsPlaying(false);
       return;
     }
 
-    if (audioBuffer) {
-      await playPcm(audioBuffer);
-    } else {
-      setIsLoading(true);
-      try {
-        const res = await fetch('/api/tts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: content }),
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.audio) {
-            setAudioBuffer(data.audio);
-            await playPcm(data.audio);
-          }
-        }
-      } catch (err) {
-        console.error('TTS 실패:', err);
-      } finally {
+    setIsLoading(true);
+    try {
+      const audio = new Audio(`/audio/${lang}.mp3`);
+      audioRef.current = audio;
+      audio.onended = () => {
+        setIsPlaying(false);
+        audioRef.current = null;
+      };
+      audio.onerror = () => {
+        setIsPlaying(false);
         setIsLoading(false);
-      }
+        console.error('오디오 재생 실패');
+      };
+      await audio.play();
+      setIsPlaying(true);
+    } catch (err) {
+      console.error('재생 실패:', err);
+    } finally {
+      setIsLoading(false);
     }
-  };
-
-  const playPcm = async (base64: string) => {
-    const context = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
-
-    const binaryString = window.atob(base64);
-    const bytes = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-
-    const data = new Int16Array(bytes.buffer);
-    const floatData = new Float32Array(data.length);
-    for (let i = 0; i < data.length; i++) {
-      floatData[i] = data[i] / 32768.0;
-    }
-
-    const buffer = context.createBuffer(1, floatData.length, 24000);
-    buffer.getChannelData(0).set(floatData);
-
-    const source = context.createBufferSource();
-    source.buffer = buffer;
-    source.connect(context.destination);
-    source.start();
-    setAudioSource(source);
-    setIsPlaying(true);
-    source.onended = () => {
-      setIsPlaying(false);
-      setAudioSource(null);
-    };
   };
 
   return (
