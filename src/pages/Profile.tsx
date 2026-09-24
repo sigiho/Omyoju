@@ -9,17 +9,16 @@ export const Profile: React.FC<{ path: string }> = ({ path }) => (
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1.8, delay: 0.2 }}
-      className="relative mx-auto max-w-6xl overflow-hidden"
+      className="relative mx-auto max-w-3xl"
     >
-      <img
-        src="/images/profile.jpg"
-        alt="정익현 작가"
-        className="aspect-[4/5] w-full object-cover object-[62%_center] sm:aspect-[3/2]"
-      />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-obang-black via-transparent to-transparent" />
-      <figcaption className="absolute bottom-6 left-6 md:bottom-12 md:left-12">
-        <p className="font-kr text-3xl font-light tracking-[0.3em] text-obang-white md:text-5xl">{profile.name}</p>
-        <p className="mt-3 font-serif text-sm uppercase tracking-[0.45em] text-gold/80 md:text-base">{profile.nameEn}</p>
+      {/* 사진은 자르지 않고 원래 비율 그대로 보여줍니다. 이름은 인물이 없는 왼쪽 아래 여백에 올립니다. */}
+      <img src="/images/artist-profile.jpg" alt="정익현 작가" width={1600} height={1600} className="block h-auto w-full" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-obang-black/80 via-transparent to-transparent" />
+      <figcaption className="absolute bottom-5 left-5 sm:bottom-10 sm:left-10 md:bottom-12 md:left-12">
+        <p className="font-kr text-2xl font-light tracking-[0.3em] text-obang-white sm:text-3xl md:text-5xl">{profile.name}</p>
+        <p className="mt-2 font-serif text-[11px] uppercase tracking-[0.35em] text-gold/80 sm:mt-3 sm:text-sm sm:tracking-[0.45em] md:text-base">
+          {profile.nameEn}
+        </p>
       </figcaption>
     </motion.figure>
 

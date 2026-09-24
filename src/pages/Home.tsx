@@ -47,7 +47,7 @@ export const Home: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.6, delay: 1.4 }}
-            className="mt-4 font-serif text-sm uppercase tracking-[0.5em] text-obang-white/40"
+            className="mt-4 font-serif text-sm uppercase tracking-[0.5em] text-obang-white"
           >
             Jung Ik-hyun · 정익현
           </motion.p>
