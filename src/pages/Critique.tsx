@@ -31,18 +31,7 @@ export const CritiqueLan: React.FC<{ path: string }> = ({ path }) => {
 
   return (
     <PageFrame path={path} title="평론 · 란간우">
-      <div className="mb-16 flex flex-col items-center gap-10">
-        <figure className="flex items-center gap-5">
-          <img
-            src="/images/lan-ganwu.jpg"
-            alt="란간우(兰干武) 소개"
-            className="h-40 w-auto border border-white/10 object-cover opacity-90"
-          />
-          <figcaption className="text-left">
-            <p className="font-zh text-xl text-gold">兰干武</p>
-            <p className="mt-1 font-kr text-sm text-obang-white/60">란간우 · Lan Ganwu</p>
-          </figcaption>
-        </figure>
+      <div className="mb-16 flex justify-center">
         <LangToggle
           options={[
             { code: "ko", label: "한국어" },
@@ -52,7 +41,7 @@ export const CritiqueLan: React.FC<{ path: string }> = ({ path }) => {
           onChange={(c) => setLang(c as "ko" | "zh")}
         />
       </div>
-      <Essay id="lan" text={text} lang={lang === "zh" ? "zh-Hans" : "ko"} fontClass={lang === "zh" ? "font-zh" : "font-kr"} />
+      <Essay id="lan" text={text} lang={lang === "zh" ? "zh-Hans" : "ko"} fontClass={lang === "zh" ? "font-zh [word-break:normal]" : "font-kr"} />
     </PageFrame>
   );
 };
