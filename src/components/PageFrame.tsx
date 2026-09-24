@@ -28,7 +28,7 @@ export const PageFrame: React.FC<PageFrameProps> = ({ path, title, children, wid
   const next = sections[i + 1];
 
   return (
-    <div className="pt-36 md:pt-44">
+    <div className="pt-36 md:pt-44 short:pt-24">
       <motion.header
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}

@@ -1,5 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@200;300;400;500&family=Noto+Serif+KR:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500&display=swap');
 @import "tailwindcss";
+
+/* 세로가 짧은 화면 (Flip 커버 화면, 가로로 눕힌 휴대폰 등) */
+@custom-variant short {
+  @media (max-height: 560px) {
+    @slot;
+  }
+}
 
 @theme {
   --font-sans: "Inter", "Noto Serif KR", ui-sans-serif, system-ui, sans-serif;
@@ -33,30 +39,38 @@
 }
 
 @layer utilities {
-  .text-glow {
-    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-  }
-
-  .gold-gradient {
-    background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-  }
-
-  .silver-gradient {
-    background: linear-gradient(45deg, #70706F, #EFEFEF, #BDBDBD, #EFEFEF, #70706F);
-  }
-
-  .gold-text {
-    background: linear-gradient(100deg, #aa771c, #fcf6ba 45%, #d4af37 60%, #b38728);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
   .glass-morphism {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+    @apply bg-white/5 border border-white/10;
   }
 
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
+  .art-glow-base {
+    background:
+      radial-gradient(circle at 50% 50%, rgb(0 71 171 / 0.2) 0%, transparent 70%),
+      radial-gradient(circle at 50% 48%, rgb(255 255 255 / 0.05) 0%, transparent 45%);
+  }
+
+  .art-glow-drift {
+    background:
+      radial-gradient(42vmax 42vmax at 12% 16%, rgb(212 175 55 / 0.09), transparent 70%),
+      radial-gradient(36vmax 36vmax at 90% 24%, rgb(192 192 192 / 0.07), transparent 70%),
+      radial-gradient(48vmax 48vmax at 80% 90%, rgb(212 175 55 / 0.1), transparent 70%),
+      radial-gradient(32vmax 32vmax at 16% 84%, rgb(192 192 192 / 0.06), transparent 70%);
+    animation: art-breathe 16s ease-in-out infinite alternate;
+  }
+}
+
+/* 투명도만 바뀌므로 GPU가 다시 그리지 않고 합성만 합니다. */
+@keyframes art-breathe {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .art-glow-drift {
+    animation: none;
   }
 }

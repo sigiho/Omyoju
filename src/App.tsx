@@ -26,7 +26,6 @@ export default function App() {
   const Page = pages[path];
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     const s = sections.find((x) => x.path === path);
     document.title = s ? `${s.ko}${s.detail ? ` · ${s.detail}` : ""} — 오묘주 奧妙宙` : "오묘주 奧妙宙 — 정익현";
   }, [path]);
@@ -36,7 +35,8 @@ export default function App() {
       <ArtCanvas />
       <Header path={path} />
 
-      <AnimatePresence mode="wait">
+      {/* 이전 페이지가 사라진 뒤에 맨 위로 바로 이동합니다. 부드러운 스크롤로 긴 페이지를 거슬러 오르면 휴대폰에서 버벅입니다. */}
+      <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo({ top: 0, behavior: "instant" })}>
         <motion.main
           key={Page ? path : "/"}
           initial={{ opacity: 0 }}

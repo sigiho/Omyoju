@@ -24,12 +24,12 @@ export const Header: React.FC<{ path: string }> = ({ path }) => {
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-700 ${
-          scrolled || open ? "bg-obang-black/70 backdrop-blur-xl border-b border-white/5" : "bg-transparent"
+          scrolled || open ? "bg-obang-black/90 border-b border-white/5" : "bg-transparent"
         }`}
       >
-        <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-5 md:px-10">
+        <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-5 md:px-10 short:h-14">
           <Link to="/" className="group flex items-center gap-3" aria-label="오묘주 홈">
-            <img src="/images/logo-gold.png" alt="" className="h-12 w-12 -my-2 object-contain transition-transform duration-700 group-hover:scale-105" />
+            <img src="/images/logo-gold.png" alt="" className="h-12 w-12 -my-2 object-contain short:h-9 short:w-9 transition-transform duration-700 group-hover:scale-105" />
             <span className="flex flex-col leading-none">
               <span className="font-kr text-lg tracking-[0.2em] text-gold">오묘주</span>
               <span className="mt-1 font-serif text-[11px] tracking-[0.45em] text-obang-white/50">奧妙宙 · O-MYO-JU</span>
@@ -78,10 +78,10 @@ export const Header: React.FC<{ path: string }> = ({ path }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="fixed inset-0 z-40 bg-obang-black/95 backdrop-blur-2xl lg:hidden"
+            className="fixed inset-0 z-40 bg-obang-black/[0.97] lg:hidden"
           >
-            <nav className="flex h-full flex-col justify-center px-8" aria-label="모바일 메뉴">
-              <ol className="space-y-6">
+            <nav className="flex h-full flex-col justify-center overflow-y-auto px-8 short:justify-start short:pt-20" aria-label="모바일 메뉴">
+              <ol className="space-y-6 short:space-y-3">
                 {sections.map((s, i) => (
                   <motion.li
                     key={s.path}

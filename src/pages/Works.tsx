@@ -118,13 +118,13 @@ const Lightbox: React.FC<{ index: number | null; onChange: (i: number | null) =>
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="fixed inset-0 z-[60] flex flex-col bg-obang-black/95 backdrop-blur-xl"
+          className="fixed inset-0 z-[60] flex flex-col bg-obang-black/[0.97]"
           role="dialog"
           aria-modal="true"
           aria-label={`${w.title} 상세`}
           onClick={() => onChange(null)}
         >
-          <div className="flex h-20 shrink-0 items-center justify-between px-5 md:px-10">
+          <div className="flex h-20 shrink-0 items-center justify-between px-5 md:px-10 short:h-12">
             <span className="font-serif text-sm tracking-[0.3em] text-gold/70">
               {w.no} / {String(works.length).padStart(2, "0")}
             </span>
@@ -172,13 +172,13 @@ const Lightbox: React.FC<{ index: number | null; onChange: (i: number | null) =>
             </button>
           </div>
 
-          <div className="shrink-0 px-6 py-8 text-center" onClick={(e) => e.stopPropagation()}>
+          <div className="shrink-0 px-6 py-8 text-center short:py-3" onClick={(e) => e.stopPropagation()}>
             <p className="font-kr text-xl text-obang-white md:text-2xl">{w.title}</p>
             <p className="mt-3 font-kr text-sm text-obang-white/55">
               {mediumLabel[w.medium].ko} · {w.size}
               {w.year ? ` · ${w.year}` : ""}
             </p>
-            <p className="mt-1 font-serif text-sm italic text-obang-white/35">{mediumLabel[w.medium].en}</p>
+            <p className="mt-1 font-serif text-sm italic text-obang-white/35 short:hidden">{mediumLabel[w.medium].en}</p>
           </div>
         </motion.div>
       )}

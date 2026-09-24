@@ -15,23 +15,23 @@ export const Home: React.FC = () => {
 
   return (
     <div>
-      <section className="relative flex h-[100svh] flex-col items-center justify-center px-6">
+      <section className="relative flex min-h-[100svh] flex-col items-center justify-center px-6 py-28 short:py-20">
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 2, ease: "easeOut" }}
-            className="relative mx-auto mb-10 w-fit"
+            className="relative mx-auto mb-10 w-fit short:mb-4"
           >
-            <div className="absolute inset-0 rounded-full bg-gold/20 blur-3xl" />
-            <img src="/images/logo-gold.png" alt="오묘주 로고" className="relative mx-auto w-44 md:w-56" />
+            <div className="absolute -inset-12 bg-[radial-gradient(circle,rgb(212_175_55/0.2),transparent_65%)]" />
+            <img src="/images/logo-gold.png" alt="오묘주 로고" className="relative mx-auto w-44 md:w-56 short:w-24" />
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.6, delay: 0.6 }}
-            className="font-serif text-6xl leading-none tracking-tight text-gold/85 mix-blend-screen md:text-8xl"
+            className="font-serif text-6xl leading-none tracking-tight text-gold/85 md:text-8xl short:text-5xl"
           >
             奧妙宙
           </motion.h1>
@@ -39,7 +39,7 @@ export const Home: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.6, delay: 1.1 }}
-            className="mt-8 font-kr text-sm tracking-[0.6em] text-obang-white/60 md:text-base"
+            className="mt-8 font-kr text-sm short:mt-4 tracking-[0.6em] text-obang-white/60 md:text-base"
           >
             빛과 감각이 귀일하는 우주
           </motion.p>
@@ -57,7 +57,7 @@ export const Home: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 2, delay: 2 }}
-          className="absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center gap-4"
+          className="absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center gap-4 short:hidden"
         >
           <span className="font-serif text-[10px] uppercase tracking-[0.5em] text-gold/50">Scroll</span>
           <div className="h-12 w-px bg-gradient-to-b from-gold/40 to-transparent" />

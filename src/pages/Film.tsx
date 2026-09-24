@@ -12,7 +12,7 @@ export const Film: React.FC<{ path: string }> = ({ path }) => (
       transition={{ duration: 1.2, delay: 0.3 }}
       className="relative mx-auto max-w-6xl"
     >
-      <div className="absolute -inset-10 -z-10 rounded-[3rem] bg-gold/10 blur-3xl" />
+      <div className="absolute inset-x-0 -inset-y-16 -z-10 bg-[radial-gradient(ellipse_at_center,rgb(212_175_55/0.1),transparent_70%)]" />
       <div className="relative aspect-video overflow-hidden border border-gold/20 bg-black shadow-[0_0_80px_rgba(212,175,55,0.08)]">
         <iframe
           className="absolute inset-0 h-full w-full"

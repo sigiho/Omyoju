@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 
+// 페이지 이동 시 스크롤 위치는 App에서 직접 맞춥니다.
+if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
+
 const listeners = new Set<() => void>();
 
 export function navigate(to: string) {
