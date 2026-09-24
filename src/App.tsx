@@ -54,7 +54,7 @@ export default function App() {
             <img src="/images/logo-gold.png" alt="" className="h-9 w-9 object-contain opacity-80" />
             <span className="font-kr text-xs tracking-[0.3em] text-obang-white/40">오묘주 奧妙宙 · 정익현</span>
           </div>
-          <img src="/images/hakgojae.png" alt="Hakgojae Art Center" className="h-7 w-auto opacity-50 invert" />
+          <img src="/images/hakgojae-white.png" alt="Hakgojae Art Center" className="h-7 w-auto opacity-50" />
         </div>
       </footer>
     </div>

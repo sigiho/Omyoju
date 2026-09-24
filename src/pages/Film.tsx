@@ -5,13 +5,23 @@ import { PageFrame } from "../components/PageFrame";
 interface Video {
   id: string;
   title: string;
-  caption: string;
+  caption: React.ReactNode;
   // 세로 영상(YouTube Shorts)
   vertical?: boolean;
 }
 
 const videos: Video[] = [
-  { id: "e5Kz0VSZwkg", title: "OMYOJU — Hakgojae Art Center, 2026", caption: "Hakgojae Art Center · 2026" },
+  {
+    id: "e5Kz0VSZwkg",
+    title: "OMYOJU — Hakgojae Art Center, 2026",
+    caption: (
+      <span className="inline-flex items-center gap-4 font-sans text-sm tracking-[0.3em]">
+        <img src="/images/hakgojae-white.png" alt="Hakgojae Art Center" width={1000} height={347} className="h-8 w-auto" />
+        <span aria-hidden>·</span>
+        <span>Seoul</span>
+      </span>
+    ),
+  },
   { id: "JgI50gyz30s", title: "OMYOJU — Zall Art Museum, China, 2026", caption: "Zall Art Museum, China · 2026", vertical: true },
 ];
 
