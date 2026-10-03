@@ -6,7 +6,7 @@ import { thumbSrc, works } from "../content/works";
 import { sections } from "../lib/sections";
 
 // 목차 옆에 보이는 대표 이미지
-const previews = ["03", "12", "05", "09", "01", "14"].map((no) => works.find((w) => w.no === no)!);
+const previews = ["04", "03", "12", "05", "09", "01", "14"].map((no) => works.find((w) => w.no === no)!);
 
 export const Home: React.FC = () => {
   const { scrollY } = useScroll();

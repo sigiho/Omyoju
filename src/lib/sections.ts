@@ -7,6 +7,7 @@ export interface Section {
 }
 
 export const sections: Section[] = [
+  { path: "/floor-plan", ko: "작품 배치도", en: "Floor Plan" },
   { path: "/film", ko: "영상", en: "Film" },
   { path: "/critique/lee-jinmyung", ko: "평론", en: "Critique", detail: "이진명" },
   { path: "/critique/lan-ganwu", ko: "평론", en: "Critique", detail: "란간우" },

@@ -7,11 +7,13 @@ import { sections } from "./lib/sections";
 import { ArtistNote } from "./pages/ArtistNote";
 import { CritiqueLan, CritiqueLee } from "./pages/Critique";
 import { Film } from "./pages/Film";
+import { FloorPlan } from "./pages/FloorPlan";
 import { Home } from "./pages/Home";
 import { Profile } from "./pages/Profile";
 import { Works } from "./pages/Works";
 
 const pages: Record<string, React.FC<{ path: string }>> = {
+  "/floor-plan": FloorPlan,
   "/film": Film,
   "/critique/lee-jinmyung": CritiqueLee,
   "/critique/lan-ganwu": CritiqueLan,

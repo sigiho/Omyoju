@@ -37,7 +37,7 @@ export const Header: React.FC<{ path: string }> = ({ path }) => {
           </Link>
 
           <nav className="hidden lg:block" aria-label="주요 메뉴">
-            <ol className="flex items-center gap-7">
+            <ol className="flex items-center gap-5 xl:gap-7">
               {sections.map((s, i) => {
                 const active = path === s.path;
                 return (
