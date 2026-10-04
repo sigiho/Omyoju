@@ -25,7 +25,7 @@ export const works: Work[] = [
   { no: "10", title: "빛과 색 사이", size: "91×73cm (30F)", material: "Acrylic, silver leaf on canvas", year: 2026, w: 641, h: 800, ext: "jpg" },
   { no: "12", title: "오방의 숨결", size: "73×61cm (20F)", material: "Acrylic, gold leaf, silver leaf on canvas", year: 2026, w: 663, h: 800, ext: "jpg" },
   { no: "13", title: "오방의 숨결", size: "53×46cm (10F)", material: "Acrylic, gold leaf on canvas", year: 2026, w: 690, h: 800, ext: "jpg" },
-  { no: "16", title: "고요의 빛", size: "46×38cm (8F)", material: "Acrylic, gold leaf on canvas", year: 2026, w: 531, h: 800, ext: "jpg" },
+  { no: "16", title: "고요의 빛", size: "46×38cm (8F)", material: "Acrylic, gold leaf on canvas", year: 2026, w: 670, h: 800, ext: "jpg" },
 ];
 
 export const thumbSrc = (w: Work) => `/works/thumb/${w.no}.${w.ext}`;
