@@ -35,6 +35,7 @@ const lastYear = Math.max(...years);
 
 const lightboxItems: LightboxItem[] = works.map((w) => ({
   key: w.no,
+  label: `OMYOJU ${w.no}`,
   src: fullSrc(w),
   w: w.w,
   h: w.h,

@@ -6,6 +6,8 @@ export interface LightboxItem {
   src: string;
   w: number;
   h: number;
+  // 작품 번호 (예: OMYOJU 16) — 위쪽 순서 표시와 작품 번호가 다를 수 있어 따로 보여줍니다.
+  label?: string;
   title: string;
   detail: string;
   note?: string;
@@ -107,6 +109,7 @@ export const Lightbox: React.FC<LightboxProps> = ({ items, index, onChange }) =>
           </div>
 
           <div className="shrink-0 px-6 py-8 text-center short:py-3" onClick={(e) => e.stopPropagation()}>
+            {item.label && <p className="mb-2 font-serif text-xs uppercase tracking-[0.3em] text-gold/70">{item.label}</p>}
             <p className="font-kr text-xl text-obang-white md:text-2xl">{item.title}</p>
             <p className="mt-3 font-kr text-sm text-obang-white/55">{item.detail}</p>
             {item.note && <p className="mt-1 font-serif text-sm italic text-obang-white/35 short:hidden">{item.note}</p>}

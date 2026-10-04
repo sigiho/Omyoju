@@ -9,6 +9,7 @@ const entries = spots.map((spot) => ({ spot, work: works.find((w) => w.no === sp
 
 const lightboxItems: LightboxItem[] = entries.map(({ spot, work }) => ({
   key: spot.no,
+  label: `OMYOJU ${work.no}`,
   src: fullSrc(work),
   w: work.w,
   h: work.h,
